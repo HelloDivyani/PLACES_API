@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -18,7 +19,10 @@ import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
+TextView t1,t2;
 
+    String lat;
+    String lng;
     private String TAG = MainActivity.class.getSimpleName();
 
     private ProgressDialog pDialog;
@@ -33,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        t1=(TextView)findViewById(R.id.lat);
+        t2=(TextView)findViewById(R.id.lg);
         contactList = new ArrayList<>();
 
         lv = (ListView) findViewById(R.id.list);
@@ -84,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                    JSONObject sys=contacts.getJSONObject("geometry").getJSONObject("location");
+                     lat=sys.getString("lat");
+                     lng=sys.getString("lng");//t1.setText(lat);
+                    //t2.setText(lng);
 
                     // looping through All Contacts
                     //for (int i = 0; i < contacts.length(); i++) {
@@ -157,7 +166,9 @@ public class MainActivity extends AppCompatActivity {
             ListAdapter adapter = new SimpleAdapter(
                     MainActivity.this, contactList,R.layout.list_item, new String[]{"name","formatted_address"
                     }, new int[]{R.id.name, R.id.place_id});
-
+           // t1.setText(lat);
+            //t2.setText(lng);
+            Toast.makeText(MainActivity.this,"Lat :"+lat+"Lng :"+lng,Toast.LENGTH_SHORT).show();
             lv.setAdapter(adapter);
         }
 
